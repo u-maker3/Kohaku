@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fff8ef">
+<title>九星うめこ｜今月どうなん？</title>
+<style>
+:root{--ink:#3d302b;--pink:#e95672;--cream:#fff8ef;--gold:#c8942e;--card:#fff;--shadow:0 14px 38px rgba(77,49,36,.13)}
+*{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",sans-serif;color:var(--ink);background:radial-gradient(circle at 20% 0,#fff 0,#fff8ef 38%,#f8eee2 100%);min-height:100vh}
+.wrap{max-width:620px;margin:auto;padding:24px 16px 60px}.hero{text-align:center;padding:22px 8px 10px}.kicker{font-size:13px;font-weight:800;letter-spacing:.12em;color:#a56e39}.hero h1{font-size:34px;line-height:1.08;margin:8px 0 10px}.hero h1 span{color:var(--pink)}.hero p{margin:0;color:#77665f;line-height:1.7}
+.panel,.result{background:rgba(255,255,255,.92);border:1px solid #f0dfcf;border-radius:26px;box-shadow:var(--shadow);padding:20px;margin-top:18px}
+label{display:block;font-weight:800;margin-bottom:8px}.date{width:100%;font-size:18px;padding:15px 16px;border:2px solid #ead8c8;border-radius:16px;background:white;color:var(--ink)}
+button,.linkbtn{width:100%;border:0;border-radius:999px;padding:16px 18px;font-weight:900;font-size:17px;margin-top:14px;cursor:pointer;text-decoration:none;display:block;text-align:center}
+.primary{background:linear-gradient(135deg,#ef6d86,#e34f6c);color:white;box-shadow:0 8px 18px rgba(227,79,108,.25)}.secondary{background:#fff2e6;color:#7d5336}.line{background:#52b96b;color:white}
+.note{font-size:12px;line-height:1.6;color:#8a7770;margin-top:10px}.stage{display:none;text-align:center;padding:34px 12px}.bubble{display:inline-block;max-width:92%;background:white;border:2px solid #ead8c8;border-radius:22px;padding:15px 18px;font-weight:800;box-shadow:var(--shadow);animation:pop .25s ease}
+.dots{margin-top:18px;letter-spacing:6px;color:var(--pink)}@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.result{display:none;overflow:hidden}.summon{animation:rise .55s cubic-bezier(.2,.8,.2,1)}@keyframes rise{from{opacity:0;transform:translateY(28px) scale(.94)}to{opacity:1;transform:none}}
+.character{width:min(100%,430px);max-height:470px;object-fit:contain;display:block;margin:0 auto 4px;filter:drop-shadow(0 12px 15px rgba(66,44,35,.14))}
+.badge{text-align:center;font-weight:900;color:#9a682b;font-size:13px}.starname{text-align:center;font-size:30px;font-weight:950;margin:5px 0}.role{text-align:center;color:#8b6b58;font-weight:800}.quote{margin:16px 0;background:#fff5ea;border-radius:18px;padding:15px 17px;font-weight:900;text-align:center}
+.section{border-top:1px dashed #e8d4c1;padding-top:17px;margin-top:17px}.section h2{font-size:17px;margin:0 0 8px}.section p{line-height:1.85;margin:0}.deep{margin-top:12px;padding:12px 14px;border-radius:14px;background:#faf6ef;font-size:14px;font-weight:700}
+.action{margin-top:12px;padding:14px 16px;border-radius:16px;background:#fff0f3;font-weight:900}.warn{margin-top:14px;padding:12px 14px;border-radius:14px;background:#fff7d8;font-size:13px;line-height:1.6}
+.fade{opacity:0;transform:translateY(12px);transition:.45s ease}.fade.show{opacity:1;transform:none}
+.footer{text-align:center;color:#9b8880;font-size:11px;line-height:1.6;margin-top:22px}
+</style>
+</head>
+<body>
+<main class="wrap">
+<section class="hero">
+<div class="kicker">九星気学の象意から生まれた9人</div>
+<h1>九星うめこ<br><span>今月どうなん？</span></h1>
+<p>生年月日を入れてな。<br>今月担当のうめこ、呼んできます🤣</p>
+</section>
+
+<section class="panel" id="formPanel">
+<label for="birthday">生年月日</label>
+<input class="date" id="birthday" type="date" min="1926-01-01" max="2026-12-31">
+<button class="primary" id="summonBtn">九星うめこを召喚する</button>
+<div class="note">1926〜2026年対応。入力した生年月日は保存・送信しません。端末内で判定します。</div>
+</section>
+
+<section class="stage" id="stage">
+<div class="bubble" id="stageText">生まれた日、確認しまーす🐾</div>
+<div class="dots">● ● ●</div>
+</section>
+
+<section class="result" id="result">
+<div id="resultInner"></div>
+<button class="secondary" id="againBtn">家族の九星うめこも呼ぶ</button>
+<a class="linkbtn line" href="https://lin.ee/O23Sb7o" target="_blank" rel="noopener">うめこの公式LINEへ</a>
+</section>
+<div class="footer">九星気学の象意をもとにした「九星うめこ」はオリジナルキャラクターです。<br>月運はうめこ流の読みものとしてお楽しみください。</div>
+</main>
+
+<script>
+const stars = {
+1:{name:"一白水星",img:"ichihaku.PNG",role:"水の旅人",emoji:"💧",intro:"流れ見てきたで💧 ほな今月いこか。",
+fortune:"気持ちの浮き沈みがある月。結論を出すときは周囲に相談を。相手や注目を集めるので、相談事や頼まれ事には気淡いと気配りを。後に誤解に繋がります。気分転換を大切に。",deep:"緑の深い九星／一白・五黄・六白",action:"ひとりで抱え込まず、まず相談。気分転換の時間も予定に入れよ。"},
+2:{name:"二黒土星",img:"jikoku.PNG",role:"大地のおかん",emoji:"🌱",intro:"まあ座り🌱 急がんでええから聞き。",
+fortune:"仕事運好調で、一気にステップアップできる機会がありそうです。気配りや協力を大切にしましょう。トラブルは先送りにせず、誠意をもった対応を。家族との時間を大切にしてより運気UP。",deep:"緑の深い九星／三碧・六白・七赤",action:"頼られても全部背負わん。協力して、家族時間も確保やで。"},
+3:{name:"三碧木星",img:"sanpeki.PNG",role:"雷の先走り隊長",emoji:"⚡",intro:"見てきたで！⚡ 先に言うとくわ！",
+fortune:"仕事も遊びも楽しい月になりそう。今後に繋がる人脈づくりのため、会合には積極的に参加を。金銭に関することは注意が必要です。ただし仕事上でのミスや失念には気をつけて。",deep:"緑の深い九星／三碧・七赤・八白",action:"楽しい場所には参加！ただし財布と仕事の確認だけは忘れんな🤣"},
+4:{name:"四緑木星",img:"shiroku.PNG",role:"風のご縁屋さん",emoji:"💌",intro:"今月のお便り、届いてますよ〜💌",
+fortune:"活気のある月で、人間関係に変化がありそう。決断に迫られることも出てくるため大切な気付きを得られそうです。新築・不動産売買でをつけて。整体・マッサージがおすすめ。",deep:"緑の深い九星／四緑・八白・九紫",action:"変化はチャンス。焦って決めず、身体もいっぺんゆるめよ。"},
+5:{name:"五黄土星",img:"goou.PNG",role:"ど真ん中女帝",emoji:"👑",intro:"呼んだ？👑 ほな真ん中空けて。",
+fortune:"今までの努力が実り、特に目上の方から評価されます。強気にならず、謙虚さを大切に。軽度な受身でより運気UP。発熱・火傷には気をつけて。ヘッドマッサージがおすすめ。",deep:"緑の深い九星／五黄・九紫・一白",action:"評価されても王冠かぶって暴走せん🤣 謙虚さと休息を。"},
+6:{name:"六白金星",img:"roppaku.PNG",role:"天空の司令官",emoji:"☀️",intro:"今月の作戦会議、始めるで☀️",
+fortune:"今月は無理せず、ゆっくり過ごしましょう。思わぬトラブルにも慎重な対応を。異性関係でなれないとの時間を大切に。入浴や睡眠をしっかりとり、心身のリフレッシュを。",deep:"緑の深い九星／六白・一白・二黒",action:"がんばりすぎ禁止。今月は『のんびり』も立派な作戦や。"},
+7:{name:"七赤金星",img:"shichiseki.PNG",role:"福呼ぶ宴会部長",emoji:"🥂",intro:"まあまあ🥂 難しい顔せんと聞き🤣",
+fortune:"人の相談相手になることが多く、人のために動くことが今後に繋がるとき。ただしストレスを抱えやすく、胃腸も疲れやすい時期。時間に優しい食事を心がけて、休息も大切に。",deep:"緑の深い九星／七赤・二黒・三碧",action:"頼られるんは嬉しいけど、自分もちゃんと休ませや〜。"},
+8:{name:"八白土星",img:"happaku.PNG",role:"山の開拓者",emoji:"⛰️",intro:"ほな行こか⛰️ 今月、山ひとつ越えるで。",
+fortune:"発展月ですが、焦りは禁物。常に謙虚に気をつけて、落ち着いた行動を。自分の思いを明確に伝え、周囲を気遣うことが大切になります。音楽やスポーツ観戦でリフレッシュを。",deep:"緑の深い九星／八白・三碧・四緑",action:"焦らん。伝えることは伝えて、越える山はひとつずつ。"},
+9:{name:"九紫火星",img:"kyushi.PNG",role:"炎のスター",emoji:"🔥",intro:"はい注目〜🔥 今月ここ大事やで。",
+fortune:"対人関係に恵まれる月。周囲の人に素直な気持ちで感謝を忘れずに。自分の方法を柔軟な発想へも意識できます。旅行運も大吉ですので、吉方位旅行に出かけましょう。",deep:"緑の深い九星／九紫・四緑・五黄",action:"素直な『ありがとう』が開運スイッチ。出かけるなら楽しくな。"}
+};
+
+const summonLines=[
+["生まれた日、確認しまーす🐾","ちょい待ち。立春またいでへんか見てる……","九星うめこ、どこ行った……","……おった。連れてくるで！"],
+["ほな誕生日見せてもらうで〜👀","立春チェック中……","担当、休憩行ってへんやろな🤣","よし。召喚するで！"],
+["九星盤ゴソゴソ……🧭","生まれ年を確認中……","おーい、仕事やぞー🤣","あんたの九星うめこ、発見！"]
+];
+
+function risshunDay(year){
+  // 1900〜2050向けの二十四節気略算式（立春）
+  const y=year-1;
+  return Math.floor(4.8693 + 0.242713*(y-1900) - Math.floor((y-1900)/4));
+}
+function starNumberForYear(year){
+  let s=String(year).split("").reduce((a,b)=>a+Number(b),0);
+  while(s>9) s=String(s).split("").reduce((a,b)=>a+Number(b),0);
+  let n=11-s;
+  while(n>9)n-=9;
+  while(n<1)n+=9;
+  return n;
+}
+function calcStar(dateStr){
+  const [y,m,d]=dateStr.split("-").map(Number);
+  const rd=risshunDay(y);
+  let kyYear=y;
+  let boundary=false;
+  if(m<2 || (m===2 && d<rd)) kyYear=y-1;
+  if(m===2 && d===rd) boundary=true;
+  return {n:starNumberForYear(kyYear),kyYear,rd,boundary};
+}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+async function summon(){
+  const input=document.getElementById("birthday");
+  if(!input.value){input.focus();alert("生年月日入れてな🤣");return}
+  const year=Number(input.value.slice(0,4));
+  if(year<1926 || year>2026){alert("今回は1926〜2026年対応やで。");return}
+  const calc=calcStar(input.value);
+  const form=document.getElementById("formPanel"),stage=document.getElementById("stage"),result=document.getElementById("result");
+  form.style.display="none"; result.style.display="none"; stage.style.display="block";
+  const lines=summonLines[Math.floor(Math.random()*summonLines.length)];
+  for(const line of lines){document.getElementById("stageText").textContent=line;await sleep(650)}
+  stage.style.display="none";
+  render(calc);
+}
+function render(calc){
+  const s=stars[calc.n];
+  const warning=calc.boundary?`<div class="warn">⚠️ 立春当日生まれやで。この日は立春の「時刻」の前後で前年・当年の扱いが変わる場合があります。出生時刻まで確認したい場合は、暦の立春時刻と照合してな。</div>`:"";
+  document.getElementById("resultInner").innerHTML=`
+  <div class="summon">
+    <img class="character" src="${s.img}" alt="${s.name}の九星うめこ" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=&quot;warn&quot;>画像 ${s.img} が見つからへんで。index.htmlと同じ場所に置いてな🤣</div>')">
+    <div class="badge">＼ 九星うめこ召喚 ／</div>
+    <div class="starname">${s.emoji} ${s.name}</div>
+    <div class="role">${s.role}</div>
+    <div class="quote">「${s.intro}」</div>
+    ${warning}
+    <div class="section fade"><h2>9月7日〜10月7日｜今月どうなん？</h2><p>${s.fortune}</p><div class="deep">◆ ${s.deep}</div></div>
+    <div class="section fade"><h2>うめこから一言</h2><div class="action">${s.action}</div></div>
+    <div class="section fade"><div class="quote">「以上、今月担当の九星うめこでした。<br>……スクショした？ ほな帰るで🤣 また来月。」</div></div>
+  </div>`;
+  const result=document.getElementById("result");result.style.display="block";
+  setTimeout(()=>document.querySelectorAll(".fade").forEach((el,i)=>setTimeout(()=>el.classList.add("show"),220+i*280)),250);
+  result.scrollIntoView({behavior:"smooth",block:"start"});
+}
+document.getElementById("summonBtn").addEventListener("click",summon);
+document.getElementById("againBtn").addEventListener("click",()=>{document.getElementById("result").style.display="none";document.getElementById("formPanel").style.display="block";document.getElementById("birthday").value="";window.scrollTo({top:0,behavior:"smooth"})});
+</script>
+</body>
+</html>
